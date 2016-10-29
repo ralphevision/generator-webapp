@@ -17,13 +17,18 @@ $ npm install --save-dev gulp-awspublish
 
 Add this task to your `gulpfile.js`. It will run `build` task before deploying:
 
+Add at the top of your gulpfile.js
+import awspublish from 'gulp-awspublish';
+
 ```js
 gulp.task('deploy', ['build'], () => {
   // create a new publisher
-  const publisher = $.awspublish.create({
-    key: '...',
-    secret: '...',
-    bucket: '...'
+  const publisher = awspublish.create({
+    params: {
+      key: 'your-aws-key',
+      secret: 'your-aws-secret',
+      Bucket: 'your-bucket-name'
+    }
   });
 
   // define custom headers
@@ -35,7 +40,7 @@ gulp.task('deploy', ['build'], () => {
     .pipe(publisher.publish(headers))
     .pipe(publisher.sync())
     .pipe(publisher.cache())
-    .pipe($.awspublish.reporter());
+    .pipe(awspublish.reporter());
 });
 ```
 
